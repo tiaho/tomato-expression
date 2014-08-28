@@ -78,7 +78,7 @@ shinyServer(function(input, output) {
   # creates the table
   output$table <- renderTable({
     table_data()
-  }, digits = 4)
+  }, digits = 4, include.rownames = FALSE)
   
   # determines if there is overall significance or not
   output$overall_significance <- renderText({
