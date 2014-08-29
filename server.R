@@ -17,8 +17,13 @@ shinyServer(function(input, output) {
       Species <- names(seedlings)[2:5]
       CPM <- as.numeric(seedlings[place_seedlings, 2:5])
       if (input$logscale == TRUE) {CPM <- log2(CPM)}
-      qplot(x = Species, y = CPM, fill = Species,
-            main = paste("Expression level of", input$gene)) + geom_bar(stat = "identity", position = "identity")
+      combined <- cbind(Species, CPM)
+      df <- as.data.frame(combined)      
+      ggplot(df, aes(x = Species, y = CPM)) + 
+        geom_bar(stat = "identity", position = "identity", aes(fill = Species)) + 
+        ggtitle(paste("Expression level of", input$gene))
+#       qplot(x = Species, y = CPM, fill = Species,
+#             main = paste("Expression level of", input$gene)) + geom_bar(stat = "identity", position = "identity")
     }
   })
 
