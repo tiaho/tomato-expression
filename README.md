@@ -1,1 +1,3 @@
-To run this app in R: `runGitHub("tomato-expression", "tiaho")`
+To run this app in R:  
+`library(shiny)`  
+`runGitHub("tomato-expression", "tiaho")`
