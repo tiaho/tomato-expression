@@ -19,7 +19,7 @@ shinyUI(fluidPage(
                                   "FDR Corrected p-values for Pairwise Significance" = 4),
                    selected = 2),
       br(),
-      downloadButton('download_data', 'Download'),
+      downloadButton('download_table', 'Download Table'),
       br(),
       br(),
       textOutput("overall_significance"),
