@@ -134,4 +134,10 @@ shinyServer(function(input, output) {
     }
   })
   
+  output$download_data <- downloadHandler(
+    filename = function() { paste(input$gene, '.csv', sep='') },
+    content = function(file) {
+      write.csv(table_data(), file)
+    }
+)
 })
