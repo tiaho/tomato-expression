@@ -10,7 +10,7 @@ shinyServer(function(input, output) {
   
   # plots the graph
   output$graph <- renderPlot({
-    places <- grep("input$gene", seedlings$X)
+    places <- grep(input$gene, seedlings$X)
     names <- vector()
     for (i in 1:length(places)){
       names[i] <- as.character(seedlings$X[places[i]])
