@@ -7,7 +7,7 @@ shinyUI(fluidPage(
   
   sidebarLayout(
     sidebarPanel(
-      textInput("gene", label = h5("Enter desired gene name"), value = "Solyc02g081130.1.1"),
+      textInput("gene", label = h5("Enter desired gene name(s) separated by commas"), value = "Solyc02g081130.1.1"),
       br(),
       br(),
       checkboxInput("logscale", "Plots in a log scale", value = TRUE),
