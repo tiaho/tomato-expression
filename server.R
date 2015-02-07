@@ -12,7 +12,8 @@ shinyServer(function(input, output) {
   output$graph <- renderPlot({
     genes.input <- sub(" ","",input$gene) #strip white spaces
     genes.input <- unlist(strsplit(genes.input,split=","))
-    names <- seedlings$X[match(substr(genes.input,1,14), substr(seedlings$X,1,14))]
+    names <- seedlings$X[match(sub("(\\.[0-9]+)+$", "", genes.input), 
+                               sub("(\\.[0-9]+)+$", "",seedlings$X))]
     if (any(is.na(names)) ){
       missing <- genes.input[! substr(genes.input,1,14) %in% substr(seedlings$X,1,14)]
       stop(paste(missing, "does not exist"))
