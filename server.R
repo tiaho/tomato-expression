@@ -15,10 +15,12 @@ shinyServer(function(input, output) {
   output$graph <- renderPlot({
     genes.input <- sub(" ","",input$gene) #strip white spaces
     genes.input <- unlist(strsplit(genes.input,split=","))
-    names <- seedlings$gene[match(sub("(\\.[0-9]+)+$", "", genes.input), 
+    genes.input <- sub("(\\.[0-9]+)+$", "", genes.input)
+
+    names <- seedlings$gene[match(genes.input, 
                                sub("(\\.[0-9]+)+$", "",seedlings$gene))]
     if (any(is.na(names)) ){
-      missing <- genes.input[! substr(genes.input,1,14) %in% substr(seedlings$gene,1,14)]
+      missing <- genes.input[! genes.input %in% substr(seedlings$gene,1,14)]
       stop(paste(missing, "does not exist"))
     } else {
       # populates a group of vectors with the needed data for the genes found
