@@ -9,6 +9,8 @@ names(seedlings)[names(seedlings) == 'X'] <- 'gene'
 names(adjusted)[names(adjusted) == 'X'] <- 'gene'
 names(WMadjusted)[names(WMadjusted) == 'X'] <- 'gene'
 
+seedlings$gene.shortID <- sub("(\\.[0-9]+)+$", "",seedlings$gene)
+
 shinyServer(function(input, output) {
   
   # plots the graph
@@ -17,10 +19,10 @@ shinyServer(function(input, output) {
     genes.input <- unlist(strsplit(genes.input,split=","))
     genes.input <- sub("(\\.[0-9]+)+$", "", genes.input)
 
-    names <- seedlings$gene[match(genes.input, 
-                               sub("(\\.[0-9]+)+$", "",seedlings$gene))]
+    names <- seedlings$gene[match(genes.input, seedlings$gene.shortID)]
+
     if (any(is.na(names)) ){
-      missing <- genes.input[! genes.input %in% substr(seedlings$gene,1,14)]
+      missing <- genes.input[!genes.input %in% seedlings$gene.shortID]
       stop(paste(missing, "does not exist"))
     } else {
       # populates a group of vectors with the needed data for the genes found
