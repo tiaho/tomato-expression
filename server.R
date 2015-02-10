@@ -5,6 +5,11 @@ seedlings <- read.csv("data/seedling_fitted_20Jun11.csv",as.is=T) #character mat
 adjusted <- read.csv("data/adjusted.csv",as.is=T)
 WMadjusted <- read.csv("data/WMadjusted.csv",as.is=T)
 
+names(seedlings)[names(seedlings) == 'X'] <- 'gene'
+names(adjusted)[names(adjusted) == 'X'] <- 'gene'
+names(WMadjusted)[names(WMadjusted) == 'X'] <- 'gene'
+
+seedlings$gene.shortID <- sub("(\\.[0-9]+)+$", "",seedlings$gene)
 
 shinyServer(function(input, output) {
   
@@ -12,16 +17,18 @@ shinyServer(function(input, output) {
   output$graph <- renderPlot({
     genes.input <- sub(" ","",input$gene) #strip white spaces
     genes.input <- unlist(strsplit(genes.input,split=","))
-    names <- seedlings$X[match(sub("(\\.[0-9]+)+$", "", genes.input), 
-                               sub("(\\.[0-9]+)+$", "",seedlings$X))]
+    genes.input <- sub("(\\.[0-9]+)+$", "", genes.input)
+
+    names <- seedlings$gene[match(genes.input, seedlings$gene.shortID)]
+
     if (any(is.na(names)) ){
-      missing <- genes.input[! substr(genes.input,1,14) %in% substr(seedlings$X,1,14)]
+      missing <- genes.input[!genes.input %in% seedlings$gene.shortID]
       stop(paste(missing, "does not exist"))
     } else {
       # populates a group of vectors with the needed data for the genes found
       combined <- vector() 
       for (genes in names){
-        place_seedlings <- match(genes, seedlings$X, nomatch = 0)
+        place_seedlings <- match(genes, seedlings$gene, nomatch = 0)
         Species <- names(seedlings)[2:5]
         CPM <- as.numeric(seedlings[place_seedlings, 2:5])
         gene_name <- rep(genes, 4)
@@ -47,7 +54,7 @@ shinyServer(function(input, output) {
     }
   })
 #   output$graph <- renderPlot({
-#     place_seedlings <- match(input$gene, seedlings$X, nomatch = 0)
+#     place_seedlings <- match(input$gene, seedlings$gene, nomatch = 0)
 #     if (place_seedlings == 0){
 #       stop(paste(input$gene, "does not exist"))
 #     }else{
@@ -65,7 +72,7 @@ shinyServer(function(input, output) {
 #   # produces the data for 1 table, use radio buttons to determine which to plot
 #   table_data <- reactive({
 #     if (input$table_options == 1){ # Normalized CPM
-#       place_seedlings <- match(input$gene, seedlings$X, nomatch = 0)
+#       place_seedlings <- match(input$gene, seedlings$gene, nomatch = 0)
 #       if (place_seedlings == 0){
 #         stop(paste(input$gene, "does not exist"))
 #       }else{
@@ -79,7 +86,7 @@ shinyServer(function(input, output) {
 #         data
 #       }
 #     }else if (input$table_options == 2) { # log2(Normalized CPM
-#       place_seedlings <- match(input$gene, seedlings$X, nomatch = 0)
+#       place_seedlings <- match(input$gene, seedlings$gene, nomatch = 0)
 #       if (place_seedlings == 0){
 #         stop(paste(input$gene, "does not exist"))
 #       }else{
@@ -94,7 +101,7 @@ shinyServer(function(input, output) {
 #         data
 #       }
 #     }else if (input$table_options == 3) { # FDR Corrected p-values for Overall Significance
-#       place_WMadjusted <- match(input$gene, WMadjusted$X, nomatch = 0)
+#       place_WMadjusted <- match(input$gene, WMadjusted$gene, nomatch = 0)
 #       if (place_WMadjusted == 0){
 #         stop(paste(input$gene, "does not exist"))
 #       }else{
@@ -103,7 +110,7 @@ shinyServer(function(input, output) {
 #         data
 #       }
 #     }else if (input$table_options == 4) { # FDR Corrected p-values for Pairwise Significance
-#       place_adjusted <- match(input$gene, adjusted$X, nomatch = 0)
+#       place_adjusted <- match(input$gene, adjusted$gene, nomatch = 0)
 #       if (place_adjusted == 0){
 #         stop(paste("Pairwise species comparison data does not exist for", input$gene))
 #       }else{
@@ -121,7 +128,7 @@ shinyServer(function(input, output) {
 #   
 #   # determines if there is overall significance or not
 #   output$overall_significance <- renderText({
-#     place_WMadjusted <- match(input$gene, WMadjusted$X, nomatch = 0)
+#     place_WMadjusted <- match(input$gene, WMadjusted$gene, nomatch = 0)
 #     if (place_WMadjusted == 0) {
 #       stop(paste(input$gene, "does not exist"))
 #     }else{
@@ -132,13 +139,13 @@ shinyServer(function(input, output) {
 #   
 #   # determines if there is pairwise significance or not
 #   output$pairwise_significance <- renderText({
-#     places <- grep(input$gene, seedlings$X)
+#     places <- grep(input$gene, seedlings$gene)
 #     names <- vector()
 #     for (i in 1:length(places)){
-#       names[i] <- as.character(seedlings$X[places[i]])
+#       names[i] <- as.character(seedlings$gene[places[i]])
 #     }
 #     names
-# #     place_adjusted <- match(input$gene, adjusted$X, nomatch = 0)
+# #     place_adjusted <- match(input$gene, adjusted$gene, nomatch = 0)
 # #     if (place_adjusted == 0){
 # #       stop(paste("Pairwise species comparison data does not exist for", input$gene))
 # #     }else{
