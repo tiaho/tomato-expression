@@ -2,12 +2,22 @@
 
 library(shiny)
 
+seedlings <- read.csv("data/seedling_fitted_20Jun11.csv",as.is=T) #character mathcing works better if we don't convert to factors
+adjusted <- read.csv("data/adjusted.csv",as.is=T)
+WMadjusted <- read.csv("data/WMadjusted.csv",as.is=T)
+
+gene_list <- c(seedlings$X, adjusted$X, WMadjusted$X)
+gene_list <- unique(gene_list)
+
 shinyUI(fluidPage(
   titlePanel("Tomato Expression"),
   
   sidebarLayout(
     sidebarPanel(
-      textInput("gene", label = h5("Enter desired gene name(s) separated by commas"), value = "Solyc02g081130.1.1"),
+      selectizeInput("gene", label = h5("Enter desired gene name(s) separated by commas"),
+                     multiple = TRUE, selected = "Solyc02g081130.1.1",
+                     choices = gene_list, 
+      ),
       br(),
       br(),
       checkboxInput("logscale", "Plots in a log scale", value = TRUE),
