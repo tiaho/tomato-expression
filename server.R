@@ -56,7 +56,7 @@ shinyServer(function(input, output) {
   
   output$graph <- renderPlot({
     data <- vector()
-    for (i in length(input$gene)){
+    for (i in 1:length(input$gene)){
       place_seedlings <- match(input$gene[i], seedlings$gene, nomatch = 0)
       if (place_seedlings == 0){
         stop(paste(input$gene, "does not exist"))
@@ -64,7 +64,7 @@ shinyServer(function(input, output) {
         Species <- names(seedlings)[2:5]
         CPM <- as.numeric(seedlings[place_seedlings, 2:5])
         if (input$logscale == 2) {CPM <- log2(CPM)}
-        gene <- rep(input$gene, 4)
+        gene <- rep(input$gene[i], 4)
         tmp_data <- cbind(Species, CPM, gene)
         data <- rbind(data, tmp_data)
       } 
@@ -76,7 +76,7 @@ shinyServer(function(input, output) {
   
       ggplot(df, aes(x = Species, y = CPM)) + 
         geom_bar(stat = "identity", position = "identity", aes(fill = Species)) + 
-        facet_grid(. ~ gene) +
+        facet_wrap( ~ gene, ncol = 4) +
         ggtitle(paste("Expression level of", input$gene))
 #     }
   })
