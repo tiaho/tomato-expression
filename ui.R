@@ -2,23 +2,16 @@
 
 library(shiny)
 
-seedlings <- read.csv("data/seedling_fitted_20Jun11.csv",as.is=T) #character macthing works better if we don't convert to factors
-adjusted <- read.csv("data/adjusted.csv",as.is=T)
-WMadjusted <- read.csv("data/WMadjusted.csv",as.is=T)
-
-# gene_list <- c(seedlings$X, adjusted$X, WMadjusted$X)
-# gene_list <- sort(unique(gene_list))
-
-gene_list <- sort(seedlings$X)
-
 shinyUI(fluidPage(
   titlePanel("Tomato Expression"),
-  
+
   sidebarLayout(
     sidebarPanel(
-      selectizeInput("gene", label = h5("Enter desired gene name(s) separated by commas"),
-                     multiple = TRUE, selected = "Solyc02g081130.1.1",
-                     choices = gene_list,
+      selectizeInput("gene",
+                     label = h5("Enter desired gene name(s) separated by commas"),
+                     multiple = TRUE,
+                     selected = "Solyc02g081130.1.1",
+                     choices = c("Solyc02g081130.1.1")
       ),
       br(),
       br(),
@@ -42,7 +35,7 @@ shinyUI(fluidPage(
       br(),
       textOutput("pairwise_significance")
     ),
-    
+
     mainPanel(
       plotOutput("graph"),
       br(),
@@ -55,5 +48,5 @@ shinyUI(fluidPage(
       tableOutput("table_fdr")
     )
   )
-    
+
 ))

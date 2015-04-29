@@ -9,10 +9,15 @@ names(seedlings)[names(seedlings) == 'X'] <- 'gene'
 names(adjusted)[names(adjusted) == 'X'] <- 'gene'
 names(WMadjusted)[names(WMadjusted) == 'X'] <- 'gene'
 
+gene_list <- sort(seedlings$gene)
 # seedlings$gene.shortID <- sub("(\\.[0-9]+)+$", "",seedlings$gene)
 
-shinyServer(function(input, output) {
-  
+shinyServer(function(input, output, session) {
+
+  updateSelectizeInput(session, 'gene', choices  = gene_list,
+                                        server   = TRUE,
+                                        selected = "Solyc02g081130.1.1")
+
 #   # plots the graph
 #   output$graph <- renderPlot({
 #     genes.input <- sub(" ","",input$gene) #strip white spaces
