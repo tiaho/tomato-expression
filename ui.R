@@ -18,7 +18,7 @@ shinyUI(fluidPage(
     sidebarPanel(
       selectizeInput("gene", label = h5("Enter desired gene name(s) separated by commas"),
                      multiple = TRUE, selected = "Solyc02g081130.1.1",
-                     choices = gene_list,
+                     choices = gene_list
       ),
       br(),
       br(),
