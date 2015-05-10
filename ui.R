@@ -8,7 +8,7 @@ shinyUI(fluidPage(
   sidebarLayout(
     sidebarPanel(
       selectizeInput("gene",
-                     label = h5("Enter desired gene name(s) separated by commas"),
+                     label = h5("Enter desired gene name(s)"),
                      multiple = TRUE,
                      selected = "Solyc02g081130.1.1",
                      choices = c("Solyc02g081130.1.1")
@@ -28,16 +28,12 @@ shinyUI(fluidPage(
                                   "FDR Corrected p-values for Pairwise Significance" = 2),
                    selected = 1),
       br(),
-      downloadButton('download_table_fdr', 'Download the FDR Table'),
-      br(),
-      br(),
-      textOutput("overall_significance"),
-      br(),
-      textOutput("pairwise_significance")
+      downloadButton('download_table_fdr', 'Download the FDR Table')
     ),
 
     mainPanel(
       plotOutput("graph"),
+#       plotOutput("graph", width = "100%", height = "auto"),
       br(),
       br(),
       textOutput("title1"),
