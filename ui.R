@@ -14,7 +14,6 @@ shinyUI(fluidPage(
                      choices = c("Solyc02g081130.1.1")
       ),
       br(),
-      br(),
       radioButtons("logscale", label = h5("Plot/Display Options"),
                    choices = list("Normalized CPM" = 1,
                                   "log2(Normalized CPM)" = 2),
@@ -32,8 +31,8 @@ shinyUI(fluidPage(
     ),
 
     mainPanel(
-      plotOutput("graph"),
-#       plotOutput("graph", width = "100%", height = "auto"),
+#       plotOutput("graph"),
+      plotOutput("graph", width = "100%", height = "auto"),
       br(),
       br(),
       textOutput("title1"),
