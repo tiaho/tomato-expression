@@ -19,9 +19,13 @@ shinyServer(function(input, output, session) {
                                         selected = "Solyc02g081130.1.1")
   
   # sets the height for the plot
-  plot_height <- reactive({
-    300 + (150 * (length(input$gene) / 4))
-  })
+#   my_height <- reactive({
+#     800
+# #     200 + (150 * length(input$gene))
+#   })
+#   #   plot_height <- reactive({
+#   #     300 + (150 * (length(input$gene) / 4))
+#   #   })
   
   # graph
   output$graph <- renderPlot({
@@ -86,7 +90,7 @@ shinyServer(function(input, output, session) {
           }
         }
   })
-#   }, height = plot_height)
+#   }, height = my_height)
   
   # creates the table for CPM
   output$table_cpm <- renderTable({
