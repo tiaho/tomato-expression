@@ -18,15 +18,11 @@ shinyServer(function(input, output, session) {
                                         server   = TRUE,
                                         selected = "Solyc02g081130.1.1")
   
-  # sets the height for the plot
-#   my_height <- reactive({
-#     800
-# #     200 + (150 * length(input$gene))
-#   })
-#   #   plot_height <- reactive({
-#   #     300 + (150 * (length(input$gene) / 4))
-#   #   })
-  
+#   sets the height for the plot
+  my_height <- reactive({
+    200 + (150 * floor((length(input$gene) - 1)/ 4))
+  })
+
   # graph
   output$graph <- renderPlot({
     data <- vector()
@@ -51,8 +47,7 @@ shinyServer(function(input, output, session) {
         geom_bar(stat = "identity", position = "identity", aes(fill = Species)) + 
         facet_wrap( ~ gene, ncol = 4) +
         ggtitle(paste("Expression Level of Selected Genes"))
-  })
-  
+  }, height = my_height)
   
   
   # produces the data for the CPM table
@@ -90,7 +85,6 @@ shinyServer(function(input, output, session) {
           }
         }
   })
-#   }, height = my_height)
   
   # creates the table for CPM
   output$table_cpm <- renderTable({

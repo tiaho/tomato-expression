@@ -31,8 +31,7 @@ shinyUI(fluidPage(
     ),
 
     mainPanel(
-      plotOutput("graph"),
-#       plotOutput("graph", width = "100%", height = "auto"),
+      plotOutput("graph", width = "100%", height = "auto"),
       br(),
       br(),
       textOutput("title1"),
